@@ -41,4 +41,5 @@ public class Site extends AuditedEntity {
     public String getCode() { return code; }
     public String getDisplayName() { return displayName; }
     public boolean isActive() { return active; }
+    public void deactivate() { active = false; }
 }

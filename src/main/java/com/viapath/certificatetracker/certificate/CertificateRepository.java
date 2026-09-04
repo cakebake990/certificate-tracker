@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface CertificateRepository extends JpaRepository<Certificate, Long> {
+public interface CertificateRepository extends JpaRepository<Certificate, Long>, JpaSpecificationExecutor<Certificate> {
     List<Certificate> findByCustomerIdOrderByExpirationDateAsc(Long customerId);
     List<Certificate> findByNameContainingIgnoreCaseOrderByNameAsc(String name);
     List<Certificate> findByActiveTrueAndExpirationDateLessThanEqualOrderByExpirationDateAsc(LocalDate date);

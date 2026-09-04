@@ -1,6 +1,6 @@
 # Certificate Tracker
 
-Certificate Tracker is an internal, server-rendered application for maintaining a certificate inventory, understanding operational impact, and guiding certificate renewal work. The current repository contains the project foundation only; certificate business functionality is not yet implemented.
+Certificate Tracker is an internal, server-rendered application for maintaining a certificate inventory and understanding operational impact. The current implementation includes certificate search, detail, and a five-step Add Certificate wizard; renewal guidance and operational work tracking remain future work.
 
 ## Technology
 
@@ -36,6 +36,15 @@ mvn spring-boot:run
 
 Then open `http://localhost:8080/`. The default profile intentionally disables database, JPA, and Flyway auto-configuration so a new developer can validate the web foundation without SQL Server.
 
+Business routes are enabled with the `dev`, `qa`, and `test` profiles:
+
+- `/` — application home
+- `/certificates` — server-side certificate search and filters
+- `/certificates/{id}` — certificate detail
+- `/certificates/new` — session-backed Add Certificate wizard
+
+The wizard stores only a serializable form DTO in the HTTP session. It writes no domain data until final confirmation, then clears the session state and redirects to detail using Post/Redirect/Get.
+
 ## Local SQL Server configuration
 
 The `dev` and `qa` profiles enable SQL Server persistence and Flyway. Supply credentials through the process environment; never add credentials to a tracked file.
@@ -51,8 +60,8 @@ Missing variables cause startup to fail at configuration binding/connection time
 
 ## Security status
 
-Spring Security is present. A narrowly scoped, temporary security configuration permits the foundation landing page and static assets only. It does not define users, roles, or production-ready authentication and must be replaced when the security model is governed.
+Spring Security is present. A temporary security configuration permits the home, certificate, and static-asset routes. It does not define users, roles, or production-ready authentication and must be replaced when the security model is governed.
 
 ## Governance and status
 
-The foundation includes a minimal accessible terminal-style landing screen and an infrastructure-only Flyway migration. No domain CRUD, certificate schema, integrations, or automation exists yet. Start with the [project charter](docs/01-governance/PROJECT_CHARTER.md), [MVP scope](docs/02-requirements/MVP_SCOPE.md), and [architecture decisions](docs/03-architecture/ARCHITECTURE_DECISIONS.md).
+WP-004 delivers the accessible terminal-style inventory, detail, and Add flow over the WP-003 certificate schema. Update/Replace, guidance, follow-ups, support cases, administration, integrations, and automation are not implemented. Start with the [project charter](docs/01-governance/PROJECT_CHARTER.md), [MVP scope](docs/02-requirements/MVP_SCOPE.md), and [architecture decisions](docs/03-architecture/ARCHITECTURE_DECISIONS.md).

@@ -13,7 +13,7 @@ public class FoundationSecurityConfiguration {
     SecurityFilterChain foundationSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/css/**", "/error").permitAll()
+                        .requestMatchers("/", "/certificates/**", "/css/**", "/error").permitAll()
                         .anyRequest().denyAll())
                 .build();
     }

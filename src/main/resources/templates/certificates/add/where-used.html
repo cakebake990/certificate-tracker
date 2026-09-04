@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Add Certificate — Where Used</title><link rel="stylesheet" href="/css/terminal.css"></head>
+<body><main class="terminal-frame wizard" aria-labelledby="page-title"><nav th:replace="~{fragments/navigation :: primary}"></nav>
+<header class="terminal-titlebar"><div><p class="step">Step 4 of 5</p><h1 id="page-title">Where is it used?</h1></div></header>
+<section class="terminal-panel question-screen"><p>All fields on this step are optional. Record what is known now.</p>
+<form method="post" action="/certificates/new/where-used" th:object="${certificateWizard}">
+<fieldset><legend>Systems / Integrations</legend><div class="choice-grid"><label th:each="o:${options.systems}" class="choice"><input type="checkbox" th:field="*{systemIds}" th:value="${o.value}"><span th:text="${o.label}"></span></label><p th:if="${#lists.isEmpty(options.systems)}">No active systems recorded.</p></div></fieldset>
+<fieldset><legend>Environments</legend><div class="choice-grid"><label th:each="o:${options.environments}" class="choice"><input type="checkbox" th:field="*{environmentCodes}" th:value="${o.value}"><span th:text="${o.label}"></span></label></div></fieldset>
+<fieldset><legend>Affected Sites</legend><div class="choice-grid"><label th:each="o:${options.sites}" class="choice"><input type="checkbox" th:field="*{siteIds}" th:value="${o.value}"><span th:text="${o.label}"></span></label><p th:if="${#lists.isEmpty(options.sites)}">No active sites recorded for this customer.</p></div></fieldset>
+<label for="hostnameInput">Add Hostnames / FQDNs</label><textarea id="hostnameInput" th:field="*{hostnameInput}" rows="3" aria-describedby="hostname-help"></textarea><small id="hostname-help">Enter one per line or separate values with commas. Wildcard DNS names are supported.</small>
+<fieldset th:if="${!certificateWizard.hostnames.isEmpty()}" class="selection-summary"><legend>Keep previously added hostnames</legend><p>Clear a checkbox to remove that hostname before continuing.</p><label th:each="h:${certificateWizard.hostnames}" class="choice"><input type="checkbox" th:field="*{hostnames}" th:value="${h}"><span th:text="${h}"></span></label></fieldset>
+<div class="wizard-actions"><a class="secondary-button" href="/certificates/new/usage">Back</a><button type="submit">Continue</button></div></form>
+<form class="cancel-form" method="post" action="/certificates/new/cancel"><button class="link-button" type="submit">Cancel</button></form>
+</section><footer th:replace="~{fragments/navigation :: commands}"></footer></main></body></html>

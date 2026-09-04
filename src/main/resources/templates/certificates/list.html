@@ -1,0 +1,19 @@
+<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Certificate Inventory</title><link rel="stylesheet" href="/css/terminal.css"></head><body>
+<main class="terminal-frame wide" aria-labelledby="page-title"><nav th:replace="~{fragments/navigation :: primary}"></nav>
+<header class="terminal-titlebar"><h1 id="page-title">Certificate Inventory</h1><a class="command-button" href="/certificates/new">Add Certificate</a></header>
+<section class="terminal-panel compact">
+<div th:if="${successMessage}" class="message success" role="status" th:text="${successMessage}"></div>
+<div th:if="${infoMessage}" class="message info" role="status" th:text="${infoMessage}"></div>
+<div th:if="${filterWarning}" class="message warning" role="status" th:text="${filterWarning}"></div>
+<form class="filter-grid" method="get" action="/certificates" aria-label="Certificate filters">
+<label>Certificate name <input type="search" name="q" th:value="${filters.q}" autocomplete="off"></label>
+<label>Customer <select name="customer"><option value="">All customers</option><option th:each="o:${options.customers}" th:value="${o.value}" th:text="${o.label}" th:selected="${filters.customer != null and o.value == filters.customer.toString()}"></option></select></label>
+<label>Expiration health <select name="health"><option value="">All health tiers</option><option th:each="h:${healthOptions}" th:value="${h}" th:text="${h.displayName}" th:selected="${filters.health == h.name()}"></option></select></label>
+<label>System / Integration <select name="system"><option value="">All systems</option><option th:each="o:${options.systems}" th:value="${o.value}" th:text="${o.label}" th:selected="${filters.system != null and o.value == filters.system.toString()}"></option></select></label>
+<div class="button-row"><button type="submit">Search</button><a class="secondary-button" href="/certificates">Clear filters</a></div></form>
+<p class="result-count" aria-live="polite"><span th:text="${#lists.size(certificates)}">0</span> certificate(s) found</p>
+<div class="table-scroll"><table class="terminal-table"><caption class="visually-hidden">Certificate search results</caption><thead><tr><th>Customer</th><th>Certificate</th><th>Type</th><th>Expires</th><th>Health</th><th>Function / Usage</th><th>Systems</th><th>Sites</th></tr></thead>
+<tbody><tr th:each="c:${certificates}"><td th:text="${c.customer}"></td><td><a th:href="@{/certificates/{id}(id=${c.id},q=${filters.q},customer=${filters.customer},health=${filters.health},system=${filters.system})}" th:text="${c.name}"></a></td><td th:text="${c.type}"></td><td th:text="${#temporals.format(c.expirationDate,'MM/dd/yyyy')}"></td><td><span class="status-badge" th:classappend="${c.health.cssClass}" th:text="${c.health.displayName}"></span></td><td th:text="${c.functions.isEmpty() ? 'None recorded' : #strings.listJoin(c.functions, ', ')}"></td><td th:text="${c.systems.isEmpty() ? 'None recorded' : #strings.listJoin(c.systems, ', ')}"></td><td th:text="${c.siteCount}"></td></tr>
+<tr th:if="${#lists.isEmpty(certificates)}"><td colspan="8" class="empty-state">No certificates match these filters.</td></tr></tbody></table></div>
+</section><footer th:replace="~{fragments/navigation :: commands}"></footer></main></body></html>

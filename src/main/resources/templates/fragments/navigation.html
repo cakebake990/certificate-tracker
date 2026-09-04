@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="primary" class="primary-nav" aria-label="Primary navigation">
+    <a href="/">Home</a>
+    <a href="/certificates">Certificates</a>
+    <a href="/certificates/new">Add Certificate</a>
+</nav>
+<footer th:fragment="commands" class="action-footer" aria-label="Available actions">
+    <span><kbd>F1</kbd> Help (planned)</span>
+    <a href="/certificates/new"><kbd>F2</kbd> Add Certificate</a>
+    <a href="/certificates"><kbd>F4</kbd> Search</a>
+</footer>
+</body>
+</html>

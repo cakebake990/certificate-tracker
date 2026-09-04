@@ -116,6 +116,29 @@ class CertificateInventoryServiceTests {
         assertThat(customer.getVersion()).isEqualTo(1);
     }
 
+    @Test
+    void rejectsInactiveReferencesAndDeduplicatesJunctionSelections() {
+        var customer = service.createCustomer("ACME", "Acme");
+        var system = service.createSystem("OMS", "OMS");
+        system.deactivate();
+        entityManager.flush();
+        var invalid = new CertificateInventoryService.CreateCertificate(customer.getId(), "Certificate", "TLS_SSL",
+                LocalDate.now().plusDays(100), null, null, null, null, null, Set.of("APPLICATION"),
+                Set.of(system.getId()), Set.of(), Set.of(), Set.of());
+        assertThatThrownBy(() -> service.createCertificate(invalid))
+                .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("missing or inactive");
+
+        var duplicateInputs = new java.util.LinkedHashSet<String>();
+        duplicateInputs.add("APPLICATION");
+        duplicateInputs.add("APPLICATION");
+        var created = service.createCertificate(new CertificateInventoryService.CreateCertificate(customer.getId(),
+                "Deduplicated", "TLS_SSL", LocalDate.now().plusDays(100), null, null, null, null, null,
+                duplicateInputs, Set.of(), Set.of(), Set.of("one.example.org"), Set.of()));
+        entityManager.flush();
+        entityManager.clear();
+        assertThat(service.getCertificateDetail(created.getId()).getFunctionUsages()).hasSize(1);
+    }
+
     private CertificateInventoryService.CreateCertificate command(long customerId, Set<String> hostnames, Set<Long> siteIds) {
         return new CertificateInventoryService.CreateCertificate(customerId, "Certificate", "TLS_SSL", LocalDate.now().plusDays(100),
                 null, null, null, null, null, Set.of("APPLICATION"), Set.of(), Set.of(), hostnames, siteIds);

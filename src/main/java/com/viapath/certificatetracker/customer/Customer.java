@@ -32,4 +32,5 @@ public class Customer extends AuditedEntity {
     public String getName() { return name; }
     public boolean isActive() { return active; }
     public void rename(String name) { this.name = name == null ? null : name.trim(); }
+    public void deactivate() { active = false; }
 }
