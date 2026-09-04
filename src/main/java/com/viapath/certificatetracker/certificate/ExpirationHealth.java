@@ -6,7 +6,12 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 public enum ExpirationHealth {
-    ACTIVE, EXPIRING_90, EXPIRING_60, EXPIRING_30, EXPIRED;
+    ACTIVE("Active"), EXPIRING_90("≤ 90 Days"), EXPIRING_60("≤ 60 Days"), EXPIRING_30("≤ 30 Days"), EXPIRED("Expired");
+
+    private final String displayName;
+    ExpirationHealth(String displayName) { this.displayName = displayName; }
+    public String getDisplayName() { return displayName; }
+    public String getCssClass() { return name().toLowerCase().replace('_', '-'); }
 
     public static final ZoneId BUSINESS_ZONE = ZoneId.of("America/New_York");
 

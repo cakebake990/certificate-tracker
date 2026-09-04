@@ -2,15 +2,15 @@
 
 | Screen | Actor | Purpose | Primary actions | Stories | Delivery |
 |---|---|---|---|---|---|
-| Landing / Home | All | Entry point and work orientation | Open work queue/search | 001, 006 | MVP |
+| Landing / Home | All | Entry point and work orientation | Open certificate search or Add | 001, 002, 003 | Implemented (WP-004) |
 | Expiration Work Queue | Support | Prioritize expiring/expired certificates and open follow-ups | Filter, sort, open certificate/update | 001, 006, 007 | MVP |
-| Certificate Search | Implementation, Support | Find authoritative certificate records | Search/filter, open detail | 002 | MVP |
-| Certificate Detail | Implementation, Support | Understand current facts, impact, work, case, and history | Start update, view consumers/follow-ups/history | 002, 004, 007, 009 | MVP |
-| Add 1 — Customer | Implementation | Select owner | Search/select customer | 003 | MVP |
-| Add 2 — Identity/details | Implementation | Capture core facts | Enter certificate details | 003 | MVP |
-| Add 3 — Function/Usage | Implementation | Classify role | Select usages | 003 | MVP |
-| Add 4 — Where used | Implementation | Relate consumers/context | Select systems/environments/sites; add hostnames | 002, 003 | MVP |
-| Add 5 — Review/create | Implementation | Verify and persist | Edit, create | 003 | MVP |
+| Certificate Search | Implementation, Support | Find authoritative certificate records | Search/filter, open detail | 002 | Implemented (WP-004) |
+| Certificate Detail | Implementation, Support | Understand current inventory facts and impact | View certificate and consumers | 002 | Implemented (WP-004); work/case/history later |
+| Add 1 — Customer | Implementation | Select owner | Select active customer | 003 | Implemented (WP-004) |
+| Add 2 — Identity/details | Implementation | Capture core facts | Enter certificate details | 003 | Implemented (WP-004) |
+| Add 3 — Function/Usage | Implementation | Classify role | Select usages | 003 | Implemented (WP-004) |
+| Add 4 — Where used | Implementation | Relate consumers/context | Select systems/environments/sites; add/remove hostnames | 002, 003 | Implemented (WP-004) |
+| Add 5 — Review/create | Implementation | Verify and persist | Edit, create | 003 | Implemented (WP-004) |
 | Update 1 — Replacement facts | Support | Capture new facts | Enter/validate replacement | 004 | MVP |
 | Update 2 — Environments | Support | Account for deployments | Record outcomes | 004, 006 | MVP |
 | Update 3 — Related systems | Support | Check consumers | Record outcomes/propose follow-up | 004–006 | MVP |

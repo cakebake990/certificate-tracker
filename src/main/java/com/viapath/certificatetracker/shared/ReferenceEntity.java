@@ -23,4 +23,5 @@ public abstract class ReferenceEntity {
     public Long getId() { return id; }
     public String getDisplayName() { return displayName; }
     public boolean isActive() { return active; }
+    public void deactivate() { active = false; }
 }

@@ -13,3 +13,12 @@
 | CT-US-009 | Certificate Update, Guidance Response, Follow-up, Support Case | Certificate History/Detail | Immutable history and correction open decision |
 
 The complete planned screen set is governed in [Screen Inventory](../04-ux/SCREEN_INVENTORY.md).
+
+## WP-004 implementation evidence
+
+| Requirement | Implementation | Automated evidence |
+|---|---|---|
+| CT-US-002 inventory discovery | Server-side partial-name, customer, health, and optional system filters; detail projection includes all inventory relationships | `CertificateWebControllerTests.inventoryLoadsAndAppliesSearchFilters`; `detailLoadsAndUnknownCertificateReturnsOperational404` |
+| CT-US-003 short Add flow | Five server-rendered steps, dedicated session DTO, active lookup values, customer-scoped sites, review, transactional create, PRG | `CertificateWebControllerTests.wizardValidatesCurrentStepAndPreservesStateWhenNavigatingBack`; `completionCreatesOnceAndCancelClearsWizard` |
+| CT-US-003 relationship integrity | Service resolves active references, checks customer/site ownership, normalizes metadata/hostnames, and uses set-backed selections | `CertificateInventoryServiceTests.createsAndRetrievesCertificateWithAllOptionalAssociations`; `rejectsInvalidHostnameAndCrossCustomerSite`; `rejectsInactiveReferencesAndDeduplicatesJunctionSelections` |
+| Accessibility and error handling | Semantic headings, labels, fieldsets/legends, visible focus, text health labels, same-step errors, safe 404/error view | Controller rendering tests plus reusable patterns in `TERMINAL_UI_COMPONENTS.md` |

@@ -30,3 +30,11 @@ The final identity and role model, production secret storage, database operating
 - Certificate duplicate disposition: warn, block, or permit; fingerprint uniqueness scope is intentionally unresolved.
 - Customer/Site/System reference-data administration screens, deactivation effects, and merge/correction behavior.
 - Two-transaction SQL Server optimistic-lock verification and database collation/case-sensitivity behavior.
+
+## WP-004 delivery gaps
+
+- Search is unpaged and intended for the initial inventory scale; pagination and broader reporting need a later work package.
+- Add wizard state is HTTP-session only and has no governed timeout warning, cross-tab isolation, or persistent recovery.
+- Customer selection uses a native searchable-by-typing select rather than a separate server-side customer search endpoint.
+- There is no final authentication/authorization model; certificate routes retain the temporary foundation access policy.
+- V2–V5 and the WP-004 application have not been executed against a clean disposable SQL Server in this environment; H2 application tests do not replace that verification.
