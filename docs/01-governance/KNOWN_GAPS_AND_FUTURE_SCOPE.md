@@ -26,3 +26,7 @@ The final identity and role model, production secret storage, database operating
 - Reporting, exports, retention, audit correction, and operational metrics.
 - Support-case mandatory scenarios, number/link validation, and future ServiceNow integration boundaries.
 - Wizard draft retention/concurrency and whether relationship edits belong in the Update flow.
+- SQL Server integration environment/CI credentials and execution of V2–V5 against supported SQL Server versions.
+- Certificate duplicate disposition: warn, block, or permit; fingerprint uniqueness scope is intentionally unresolved.
+- Customer/Site/System reference-data administration screens, deactivation effects, and merge/correction behavior.
+- Two-transaction SQL Server optimistic-lock verification and database collation/case-sensitivity behavior.

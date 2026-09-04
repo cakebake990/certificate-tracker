@@ -1,13 +1,15 @@
 # Governed Logical Data Model Proposal
 
-**Status:** Proposed for product-owner review. This governs logical design only; WP-002 creates no domain schema or JPA entities.
+**Status:** Inventory portion implemented by WP-003. Certificate Update, guidance, follow-up, and support-case portions remain governed future schema.
+
+The implemented inventory mapping and migrations are detailed in [Physical Schema](PHYSICAL_SCHEMA.md). Product-owner decisions now establish locally owned Customer/Site data, metadata-only certificates, required follow-up due dates, optimistic locking, and America/New_York expiration calculations at 90/60/30-day boundaries.
 
 ## Design decisions
 
 1. A certificate is stored once. Sites, hostnames, environments, functions, and systems are related context, never duplicate certificate records.
 2. `Certificate` is the current authoritative inventory record. Each completed renewal or replacement creates an immutable `CertificateUpdate` event preserving prior and new facts.
 3. Expiration health is derived from the current expiration date; operational renewal state is stored separately.
-4. Product/Application/Interface are replaced in MVP by multi-valued `FunctionUsage` (what role) and `SystemIntegration` (which named consumer).
+4. Product/Application/Interface are replaced in MVP by multi-valued `FunctionUsage` (what role) and `SystemIntegration` (which named consumer); this is now approved and implemented for inventory.
 5. Guidance responses snapshot what was shown and answered; later rule edits never rewrite history.
 
 ## Logical ERD
@@ -58,7 +60,7 @@ erDiagram
 | Guidance Rule Condition | Narrow fact/operator/value trigger | Exactly 1 Rule; conditions combine with AND | Managed with rule version | Reference/configuration |
 | Guidance Response | Snapshot of rule/version, prompt, options, selected response, time/user, follow-up outcome | Exactly 1 Update and normally 1 source Rule | Immutable even when rule changes | Historical child |
 
-Exact SQL types, keys, soft-delete policy, and concurrency fields belong to physical design.
+Inventory SQL types, keys, constraints, and indexes are implemented in V2–V5. Mutable Customer, Site, Certificate, and System Integration records use optimistic versions. Reference rows are stable seeded values. Historical soft-delete and correction policy still belongs to later physical design.
 
 ## Cardinality and integrity rules
 
@@ -101,10 +103,8 @@ Do not retain Product unless stakeholders prove an independent product hierarchy
 
 ## Open decisions before physical schema
 
-1. Customer/site system of record, identifiers, synchronization, and inactive policy.
-2. Certificate identity: fingerprint, serial, subject/SANs, issuer normalization, and duplicate rules.
-3. Whether binaries/attachments are prohibited, linked externally, or separately secured.
-4. Expiring threshold, timezone/date boundaries, and possible variations.
-5. Final controlled vocabularies and administrators.
-6. User identity source, correction policy, retention, and audit export.
-7. Whether active renewal needs a separate work-item entity; MVP can initially store operational status on Certificate and create the historical event at completion.
+1. Customer/site external synchronization is future scope; inactive-record behavior and administrative UI remain open.
+2. Fingerprint, serial, subject, name, customer, and hostname overlap are candidate duplicate signals; no automatic rejection is imposed. Fingerprint uniqueness remains open.
+3. Certificate binaries and private keys are prohibited; attachment/external-link policy remains open.
+4. User identity source, history retention, and correcting-event shape.
+5. Whether active renewal needs a separate work-item entity; MVP can initially store operational status on Certificate and create history at completion.
