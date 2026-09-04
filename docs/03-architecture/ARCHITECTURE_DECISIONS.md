@@ -95,3 +95,35 @@
 - **Context:** Configurable rules will change or be retired after updates occur.
 - **Rationale:** Historical records must retain what the user actually saw and answered.
 - **Consequences:** History duplicates small amounts of display data intentionally; rule edits create new versions and never cascade into responses.
+
+## ADR-013 — BIGINT IDENTITY physical identifiers
+
+- **Decision:** Use SQL Server `BIGINT IDENTITY` primary keys consistently for MVP domain records.
+- **Status:** Accepted.
+- **Context:** The application uses one internal relational database and does not create records offline or across independently merging databases.
+- **Rationale:** Numeric identity keys are compact, operationally familiar, and efficient for PK/FK indexes; UUID distribution benefits are not required.
+- **Consequences:** IDs are database-assigned and not meaningful business identifiers; stable reference codes remain separate and unique.
+
+## ADR-014 — Explicit certificate junction entities
+
+- **Decision:** Model Certificate relationships to functions, systems, environments, and sites as explicit link entities/tables with generated ID and creation time.
+- **Status:** Accepted.
+- **Context:** These relationships need explicit constraints and may later require audit/effective metadata.
+- **Rationale:** Explicit links provide clearer SQL, controlled cascade, and extension paths than implicit JPA `@ManyToMany`.
+- **Consequences:** More entity/table types exist; pair uniqueness prevents duplicates and reference rows never cascade-delete.
+
+## ADR-015 — Certificate-owned hostname child
+
+- **Decision:** Store normalized SAN/FQDN values as owned `CertificateHostname` children unique within a certificate.
+- **Status:** Accepted.
+- **Context:** Hostnames need validation and identity but global sharing is not an MVP requirement.
+- **Rationale:** Ownership keeps lifecycle and queries direct while avoiding `@ElementCollection` limitations and global deduplication complexity.
+- **Consequences:** The same hostname may intentionally occur on multiple certificates; cross-certificate overlap is only a future duplicate signal.
+
+## ADR-016 — Derived tiered expiration health
+
+- **Decision:** Calculate `ACTIVE`, `EXPIRING_90`, `EXPIRING_60`, `EXPIRING_30`, or `EXPIRED` from expiration and the America/New_York business date; do not persist it.
+- **Status:** Accepted.
+- **Context:** Approved awareness thresholds are 90/60/30 days and the primary actionable queue begins at 30 days.
+- **Rationale:** Derivation prevents stale status and provides explicit threshold bands.
+- **Consequences:** Today through 30 days is EXPIRING_30; 31–60 is EXPIRING_60; 61–90 is EXPIRING_90; over 90 is ACTIVE; dates before today are EXPIRED. Tests use an injected/fixed `Clock`.
