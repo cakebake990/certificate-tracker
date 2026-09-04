@@ -47,3 +47,51 @@
 - **Context:** Deployment and key custody create materially different security and operational risk.
 - **Rationale:** Excluding them keeps the MVP focused on inventory, coordination, guidance, and audit.
 - **Consequences:** Existing approved systems remain responsible for keys and deployment; any future expansion requires a separate security and architecture decision.
+
+## ADR-007 — One certificate with many consumer relationships
+
+- **Decision:** Store one authoritative Certificate and relate zero or many functions, systems, environments, hostnames, and sites through children or junctions.
+- **Status:** Accepted.
+- **Context:** One certificate may support many customer sites and systems.
+- **Rationale:** Duplication per site creates conflicting identity, expiration, and history.
+- **Consequences:** Detail/work queues aggregate consumers; junction integrity and cross-customer Site validation are required.
+
+## ADR-008 — Separate historical Certificate Update entity
+
+- **Decision:** Record each completed renewal/replacement as an immutable Certificate Update event while Certificate retains current facts.
+- **Status:** Accepted.
+- **Context:** Replacing the current expiration must not erase prior operational context.
+- **Rationale:** An event can retain before/after facts, environments, user/time, cases, guidance, follow-ups, and notes.
+- **Consequences:** Completion updates current facts and appends history atomically; correction and retention policies remain open.
+
+## ADR-009 — Function / Usage and System / Integration classification
+
+- **Decision:** Replace overlapping Product/Application/Interface certificate fields with multi-valued Function / Usage and System / Integration reference dimensions for MVP.
+- **Status:** Proposed.
+- **Context:** Existing terms overlap and do not clearly distinguish role from named consumer.
+- **Rationale:** “What does it do?” and “what named system uses it?” are distinct and understandable.
+- **Consequences:** Stakeholders must validate vocabulary/mapping from SharePoint. Product returns only if an independently useful hierarchy is proven.
+
+## ADR-010 — Derived expiration health separate from operational state
+
+- **Decision:** Derive Active/Expiring/Expired from current expiration and separately store the renewal work state.
+- **Status:** Accepted.
+- **Context:** Time risk and work progress can differ simultaneously.
+- **Rationale:** Separate dimensions prevent an overloaded status and support accurate filtering.
+- **Consequences:** Threshold/timezone are governed configuration; state transitions and health calculations are tested independently.
+
+## ADR-011 — Narrow configurable guidance model
+
+- **Decision:** Evaluate active rules against bounded certificate/update facts using one condition or simple AND conditions, with set membership as a bounded OR.
+- **Status:** Proposed.
+- **Context:** Operational reminders must change without deployment, but known use cases do not need an enterprise rules engine.
+- **Rationale:** A small decision-table model is understandable, testable, and administrable.
+- **Consequences:** No scripts, nested expressions, or external side effects; administrative authorization/version workflow remains open.
+
+## ADR-012 — Snapshot historical guidance responses
+
+- **Decision:** Persist the presented prompt/explanation/options, rule stable ID/version, selected response, identity/time, and follow-up outcome with the Certificate Update.
+- **Status:** Accepted.
+- **Context:** Configurable rules will change or be retired after updates occur.
+- **Rationale:** Historical records must retain what the user actually saw and answered.
+- **Consequences:** History duplicates small amounts of display data intentionally; rule edits create new versions and never cascade into responses.
